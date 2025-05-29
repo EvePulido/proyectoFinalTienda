@@ -217,33 +217,43 @@ function mostrarCarrito(token) {
 }
 
 function agregarCarrito(id, token) {
-    const cantidadInput = document.getElementById(`cantidad${id}`); // Obtener input
-    let cantidad = parseInt(cantidadInput.value); // Convertir a entero
-    if (cantidad <= 0 || isNaN(cantidad)) {
-        mostrarMensajeCarrito("Cantidad inválida"); // Validar cantidad
-        return;
-    }
-    const producto = productos.find(p => p.id === id); // Buscar producto
-    if (!producto) {
-        mostrarMensajeCarrito("Producto no encontrado"); // Validar producto
-        return;
+    const cantidadInput = document.getElementById(`cantidad${id}`); // Obtener el input de cantidad para este producto
+    let cantidad = parseInt(cantidadInput.value); // Convertir la cantidad a número entero
+
+    if (cantidad <= 0 || isNaN(cantidad)) { // Validar que la cantidad sea válida
+        mostrarMensajeCarrito("Cantidad inválida"); // Mostrar mensaje de error
+        return; // Salir de la función
     }
 
-    const index = detalle_pedido.findIndex(item => item.id === id); // Verificar si ya está
-    if (index >= 0) {
-        detalle_pedido[index].cantidad += cantidad; // Sumar cantidad
-        detalle_pedido[index].precio_unitario = producto.precio; // Actualizar precio
-        mostrarMensajeCarrito(`Se agregó ${cantidad} unidad(es) más de "${producto.nombre}" al carrito.`, 'green'); // Mostrar mensaje
-    } else {
-        detalle_pedido.push({
-            id: id,
-            cantidad: cantidad,
-            precio_unitario: producto.precio
-        }); // Agregar nuevo
-        mostrarMensajeCarrito(`Producto "${producto.nombre}" agregado al carrito.`, 'green'); // Mensaje
+    const producto = productos.find(p => p.id === id); // Buscar el producto en la lista de productos
+    if (!producto) { // Si no se encuentra el producto
+        mostrarMensajeCarrito("Producto no encontrado"); // Mostrar error
+        return; // Salir de la función
     }
-    mostrarCarrito(token); // Actualizar carrito
+
+    const existente = detalle_pedido.find(item => item.id === id); // Ver si ya está agregado al carrito
+    const cantidadExistente = existente ? existente.cantidad : 0; // Obtener cantidad que ya está en el carrito
+    const nuevaCantidadTotal = cantidadExistente + cantidad; // Calcular cantidad total con lo nuevo
+
+    if (nuevaCantidadTotal > producto.stock) { // Validar si excede el stock disponible
+        mostrarMensajeCarrito(`Solo hay ${producto.stock} unidades disponibles.`); // Mostrar advertencia
+        return; // Salir de la función
+    }
+
+    if (existente) { // Si ya existe en el carrito
+        existente.cantidad += cantidad; // Sumar la cantidad al producto existente
+    } else { // Si es un nuevo producto en el carrito
+        detalle_pedido.push({ // Agregar al carrito
+            id: producto.id, // ID del producto
+            cantidad: cantidad, // Cantidad seleccionada
+            precio_unitario: producto.precio // Precio unitario del producto
+        });
+    }
+
+    mostrarMensajeCarrito(`${producto.nombre} agregado al carrito.`); // Mostrar confirmación
+    mostrarCarrito(token); // Actualizar visualmente el carrito
 }
+
 
 function mostrarPedidos(token, id) {
     let listaCarrito = document.getElementById('listaCarrito'); // Contenedor

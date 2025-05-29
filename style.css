@@ -28,7 +28,7 @@ h6 {
     margin: 0.6em 0em;
     cursor: pointer;
     transition: background-color 0.3s ease;
-     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
 label {
@@ -57,10 +57,12 @@ main {
     padding: 20px;
     display: flex;
     gap: 1.5em;
+    align-items: flex-start;  /* evita que el carrito baje */
+    flex-wrap: nowrap;        /* no bajar en desktop */
 }
 
 #productos {
-    width: 65%;
+    flex: 1 1 65%;
     background: white;
     padding: 20px;
     border-radius: 20px;
@@ -68,20 +70,47 @@ main {
 }
 
 .carrito {
-    width: 35%;
+    flex: 0 0 35%;
     background: white;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-height: fit-content; /* opcional para evitar estiramiento */
+}
+
+#listaProductos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5em;
+}
+
+@media (max-width: 992px) {
+    #listaProductos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    main {
+        flex-wrap: wrap; /* en móvil se apilan */
+    }
+
+    #productos, .carrito {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    #listaProductos {
+        grid-template-columns: 1fr;
+    }
 }
 
 .producto {
+    background-color: #fff;
+    padding: 1em;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid #ccc;
-    padding: 10px 0;
-}
-
-.producto:last-child {
-    border-bottom: none;
 }
 
 .producto h3 {
@@ -104,16 +133,10 @@ main {
     transition: border 0.2s ease;
 }
 
-#listaProductos {
-    display: flex;
-    gap: 1em;
-}
-
 .nav-link {
     font-size: 1.2em;
     font-weight: bold;
 }
-
 
 #formContainer {
     max-width: 500px;

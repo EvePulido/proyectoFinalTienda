@@ -1,0 +1,86 @@
+// Registro de admin
+
+curl -X POST "http://localhost:3000/api/sign-up" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nombre": "Admin",
+    "apellidos": "Principal",
+    "email": "admin@admin.com",
+    "password": "admin123",
+    "es_admin": 1,
+	"password_repeat": "admin123"
+  }'
+
+
+// Login de admin
+
+curl -X POST "http://localhost:3000/api/login" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@admin.com",
+    "password": "admin123"
+  }'
+
+
+// Agregar productos
+
+curl -X PUT "http://localhost:3000/api/admin/productos"\
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer TOKEN" \
+  -d '{
+    "nombre": "Lapicera azul",
+    "descripcion": "Bolígrafo mediano azul Dura+ BIC",
+    "precio": 6.00,
+    "stock": 50,
+    "imagen": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQGwGjo091u0oz7gk1YOJT1DXieA3ueMCZci8W5y6F1RByCX_uAm0a6ciNsDs5FcXccs0YMDU4PX9GDpWml9AXaLIgy6LTLrIkO20CmvHcVwCF_YST2k8ot8w"
+  }'
+
+curl -X POST "http://localhost:3000/api/admin/productos" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer TOKEN" \
+  -d '{
+    "nombre": "Resaltador amarillo",
+    "descripcion": "Resaltador fluorescente Faber-Castell",
+    "precio": 12.5,
+    "stock": 100,
+    "imagen": "https://tienda.faber-castell.com.mx/cdn/shop/files/554907PORTADA.jpg?v=1702334229"
+  }'
+
+
+curl -X POST "http://localhost:3000/api/admin/productos" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer TOKEN" \
+  -d '{
+    "nombre": "Lápiz de grafito HB",
+    "descripcion": "Lapiz Faber-Castell de grafito con goma.",
+    "precio": 6.75,
+    "stock": 200,
+    "imagen": "https://www.faber-castell.com.mx/-/media/Products/Product-Repository/Pencil-1210/24-24-01-Pencil/311201-Ecopencil-yellow-varnish-1210TB12P-12x/Images/311201_0_PM99.ashx?bc=ffffff&as=0&h=900&w=900&sc_lang=es-MX&hash=280C3A63AC9B78A6D94A837729C845AD"
+  }'
+
+
+// Mostrar todos los productos
+
+curl -X GET "http://localhost:3000/api/admin/productos" \
+  -H "Authorization: Bearer TOKEN"
+
+
+// Mostrar todos los clientes
+
+curl -X GET "http://localhost:3000/api/admin/clientes" \
+  -H "Authorization: Bearer TOKEN"
+
+
+// Modificar un producto según su id
+
+curl -X PUT "http://localhost:3000/api/admin/productos/1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer TOKEN" \
+  -d '{
+    "nombre": "Lapicera azul",
+    "descripcion": "Boligrafo mediano azul Dura+ BIC",
+    "precio": 5.00,
+    "stock": 50,
+    "imagen": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQGwGjo091u0oz7gk1YOJT1DXieA3ueMCZci8W5y6F1RByCX_uAm0a6ciNsDs5FcXccs0YMDU4PX9GDpWml9AXaLIgy6LTLrIkO20CmvHcVwCF_YST2k8ot8w"
+  }'
+
